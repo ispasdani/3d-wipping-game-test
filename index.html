@@ -1,0 +1,94 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Vanilla Doom Wipe</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+      #wrap { position: fixed; inset: 0; }
+      canvas { width: 100%; height: 100%; display: block; image-rendering: pixelated; }
+
+      /* Simple overlay UI */
+      #ui {
+        position: fixed; left: 0; right: 0; bottom: 0;
+        font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        color: #ddd; pointer-events: none;
+        padding: 10px 12px;
+        text-shadow: 0 2px 0 rgba(0,0,0,.6);
+      }
+      #topHelp {
+        position: fixed; left: 0; right: 0; top: 0;
+        padding: 10px 12px;
+        color: #bbb; font-family: ui-monospace, monospace;
+        pointer-events: none;
+      }
+      #hint {
+        opacity: .85;
+        font-size: 12px;
+      }
+      #healthBar {
+        width: 220px; height: 14px; border: 1px solid #666;
+        background: rgba(255,255,255,0.06);
+        position: relative;
+      }
+      #healthFill {
+        height: 100%;
+        background: linear-gradient(90deg, #33ff66, #ffee55, #ff4455);
+        width: 100%;
+      }
+      #stats {
+        margin-top: 8px; display: flex; gap: 14px; align-items: center;
+      }
+      #crosshair {
+        position: fixed; left: 50%; top: 50%;
+        width: 12px; height: 12px;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        opacity: .9;
+      }
+      #crosshair::before, #crosshair::after {
+        content: "";
+        position: absolute; left: 50%; top: 50%;
+        background: rgba(255,255,255,0.85);
+        transform: translate(-50%, -50%);
+      }
+      #crosshair::before { width: 12px; height: 2px; }
+      #crosshair::after { width: 2px; height: 12px; }
+
+      /* Drag swipe indicator (2D) */
+      #swipeLine {
+        position: fixed; inset: 0; pointer-events: none;
+      }
+
+      /* If you want the “cursor move” feel before pointer lock */
+      body:not(.locked) { cursor: crosshair; }
+    </style>
+  </head>
+  <body>
+    <div id="wrap">
+      <canvas id="game"></canvas>
+    </div>
+
+    <div id="crosshair"></div>
+    <canvas id="swipeLine"></canvas>
+
+    <div id="topHelp">
+      <div id="hint">
+        Click to lock mouse. WASD move, E open door, M minimap.
+        Click+drag = long wipe swipe. Monsters collect flowers.
+      </div>
+    </div>
+
+    <div id="ui">
+      <div id="healthBar"><div id="healthFill"></div></div>
+      <div id="stats">
+        <div>HP: <span id="hpText">100</span></div>
+        <div>Flowers stolen: <span id="stolenText">0</span></div>
+        <div>Monsters: <span id="monstersText">0</span></div>
+      </div>
+    </div>
+
+    <script type="module" src="/src/main.js"></script>
+  </body>
+</html>
